@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Campaign</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <ul class="menubar">
+            <div class="textcontainer">
+              <img src="Images/logo.png" alt="logo" >
+              <div class="text">WIL program</div>
+            </div>
+            <li><a href="index.html">Homepage</a></li>
+            <li><a href="create_campaign.html" class="active">Create Campaign</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="logout">Logout</a></li>
+        </ul>
+    </header>
+    <br>
+    <p class="slogan"> Welcome to our platform, which aims to promote local businesses and increase social consciousness! Engage in worthwhile projects, give voice to local opinions, and support neighborhood businesses that are the backbone of our communities. Together, let's spread the word, make changes, and celebrate the variety and resiliency of our communities. Come along as we encourage local entrepreneurs and support social causes.</p>
+
+    <!-- Form to post a campaign -->
+    <form id="campaignForm" onsubmit="SubmitPost(event)">
+        <label for="campaignType">Campaign Type:</label>
+        <select id="campaignType" required>
+            <option value="business">Business</option>
+            <option value="social_issues">Social Issues</option>
+        </select><br>
+        <label for="campaignTitle">Campaign Title:</label>
+        <input type="text" id="campaignTitle" required><br>
+        <label for="campaignDescription">Description:</label><br>
+        <textarea id="campaignDescription" rows="4" cols="50" required></textarea><br>
+
+        <button type="submit">Post Campaign</button>
+    </form>
+
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('campaignForm');
+            const typeInput = document.getElementById('campaignType');
+            const titleInput = document.getElementById('campaignTitle');
+            const descriptionInput = document.getElementById('campaignDescription');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const type = typeInput.value;
+                const title = titleInput.value;
+                const description = descriptionInput.value;
+                if (title.trim() !== '' && description.trim() !== '') {
+                    postCampaign(type, title, description);
+                    titleInput.value = '';
+                    descriptionInput.value = '';
+                }
+            });
+
+            function postCampaign(type, title, description) {
+                fetch('/campaigns', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ type, title, description })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Store campaign data in local storage
+                    localStorage.setItem('campaignTitle', title);
+                    localStorage.setItem('campaignDescription', description);
+                    // Redirect to admin.html after posting
+                    window.location.href = 'index.html'; // This might cause issues
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
+
+</body>
+</html>

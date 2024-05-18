@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  font-family: Montserrat, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+
+.image {
+
+  width: 300px;
+  height: 200px;
+}
+/* Basic styling for demonstration purposes */
+.column {
+  float: left;
+  width: 25%;
+  padding: 0 15px;
+  box-sizing: border-box;
+  text-align: justify;
+  hyphens: auto;
+}
+.centered {
+  text-align: center;
+}
+/* Clear floats after every fourth column */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.slogan {
+  background-color: #016768;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  margin-top: 60px;
+  overflow: hidden;
+  display: inline-block;
+  }
+
+
+.container {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.menubar {
+  list-style-type: none;
+  margin-bottom: 30px;
+  margin-top: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: white;
+  position: fixed;
+  width: 100%;
+  border: 1px solid #f2f2f2;
+  text-align: right;
+}
+
+
+
+li a {
+  display: inline-block;
+  color: black;
+  text-align: center;
+  padding: 18px 16px;
+  font-family: Montserrat;
+  text-decoration: none;
+}
+
+li a:hover {
+  color: black;
+  font-weight: bold;
+}
+
+.active {
+  font-weight: bold;
+}
+
+ul li{
+  display: inline-block;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  overflow: hidden;
+  float: right;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+nav ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  background-color: #111;
+}
+
+h3{
+  font-family: Montserrat, sans-serif;
+  color: #016768;
+}
+
+form{
+  margin-top: 20px;
+}
+
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+button {
+  width: 50%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 0px;
+  margin: 8px 0;
+  border: 1px solid;
+  cursor: pointer;
+  width: 10%;
+}
+
+button:hover {
+  opacity: 0.8;
+  background-color: #0056b3;
+}
+
+
+   
+footer {
+  text-align: center;
+  padding: 0.5px;
+  background-color: #016768;
+  color: #000;
+}
+#caption{
+text-align: center;
+  padding: 5px;
+  background-color: #016768; 
+  color: #FDFEFE
+}
+
+.campaign-item {
+  max-width: 600px; /* Adjust the value as needed to set the maximum width of the post */
+  margin: 0 auto; /* Center the post horizontally */
+  padding: 20px; /* Add padding for better readability */
+  background-color: #f9f9f9; /* Add a background color for better contrast */
+  border-radius: 8px; /* Add border radius for rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+}
+
+.campaign-content {
+  margin: auto;
+  break-after: auto;
+  text-align: center;
+
+  /* Optionally, you can add styles for the content inside the post */
+}
+
+
+
+.textcontainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  display: flex; /* Use flexbox layout */
+  align-items: center; /* Vertically center the items */
+}
+
+.textcontainer img {
+  width: 45px; /* Adjust the width of the logo as needed */
+  height: auto;
+}
+
+.text{
+  padding: 5px;
+  color: #016768;
+  font-size: 24px;
+  font-weight: bold;
+
+}

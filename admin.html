@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <ul class="menubar">
+            <div class="textcontainer">
+                <img src="Images/logo.png" alt="logo" >
+                <div class="text">WIL program</div>
+            </div>
+            <li><a href="admin.html">Admin Homepage</a></li>
+            <li><a href="logout">Logout</a></li>
+        </ul>
+    </header>
+    <br>
+    <p class="slogan">Campaigns Awaiting Approval</p>
+    <br>
+    <div id="campaignList">
+        <!-- Campaigns will be dynamically added here -->
+    </div>
+
+    <script>
+        // Function to check if a campaign's button should be hidden
+        function shouldHideButton(campaignId) {
+            const hiddenCampaigns = JSON.parse(localStorage.getItem('hiddenCampaigns')) || [];
+            return hiddenCampaigns.includes(campaignId);
+        }
+
+        // Function to update local storage with hidden campaign IDs
+        function updateHiddenCampaigns(campaignId) {
+            let hiddenCampaigns = JSON.parse(localStorage.getItem('hiddenCampaigns')) || [];
+            if (!hiddenCampaigns.includes(campaignId)) {
+                hiddenCampaigns.push(campaignId);
+                localStorage.setItem('hiddenCampaigns', JSON.stringify(hiddenCampaigns));
+            }
+        }
+
+        function approveCampaign(campaignId) {
+            fetch('/admin/approve_campaign', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ campaignId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                hideApproveButton(campaignId); // Hide Approve button
+                updateHiddenCampaigns(campaignId); // Update local storage
+            })
+            .catch(error => console.error('Error approving campaign:', error));
+        }
+
+        function deleteCampaign(campaignId) {
+            fetch('/admin/delete_campaign', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ campaignId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                hideButtons(campaignId); // Hide all buttons
+            })
+            .catch(error => console.error('Error deleting campaign:', error));
+        }
+
+        function hideApproveButton(campaignId) {
+            const approveButton = document.querySelector(`[data-id="${campaignId}"] .approve-btn`);
+            if (approveButton) {
+                approveButton.style.display = 'none'; // Hide Approve button
+            }
+        }
+
+        function hideButtons(campaignId) {
+            const campaignItem = document.querySelector(`[data-id="${campaignId}"]`);
+            if (campaignItem) {
+                const buttons = campaignItem.querySelectorAll('button');
+                buttons.forEach(button => button.style.display = 'none'); // Hide all buttons
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const campaignList = document.getElementById('campaignList');
+
+            // Fetch pending campaigns from the server and display them
+            fetch('/admin/campaigns')
+                .then(response => response.json())
+                .then(data => {
+                    data.campaigns.forEach(campaign => {
+                        addCampaignToList(campaign.id, campaign.type, campaign.title, campaign.description, campaign.approved);
+                    });
+                })
+                .catch(error => console.error('Error fetching pending campaigns:', error));
+
+            function addCampaignToList(campaignId, type, title, description, approved) {
+                const campaignItem = document.createElement('div');
+                campaignItem.classList.add('campaign-item');
+                campaignItem.dataset.id = campaignId; // Set data-id attribute for identification
+                campaignItem.innerHTML = `
+                    <div class="campaign-content">
+                        <strong>Type:</strong> ${type}<br>
+                        <strong>Title:</strong> ${title}<br>
+                        <strong>Description:</strong> ${description}<br>
+                        <strong>Status:</strong> ${approved ? 'Approved' : 'Admin Approval Needed'}<br>
+                        <button class="approve-btn" onclick="approveCampaign('${campaignId}')" ${shouldHideButton(campaignId) ? 'style="display:none;"' : ''}>Approve</button>
+                        <button class="delete-btn" onclick="deleteCampaign('${campaignId}')">Delete</button>
+                    </div>`;
+                campaignList.appendChild(campaignItem);
+
+                // Hide approve button based on local storage
+                if (shouldHideButton(campaignId)) {
+                    hideApproveButton(campaignId);
+                }
+            }
+        });
+    </script>
+
+    <footer>
+        <p>WIL program. &copy; 2024 Social Awareness</p>
+    </footer>
+</body>
+</html>
